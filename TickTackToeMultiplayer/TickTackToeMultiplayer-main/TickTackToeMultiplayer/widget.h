@@ -39,6 +39,8 @@ private:
     void buildDialog(QString winner);
     bool checkIfWrittenOn(int indexOfButton);
     void updateStandings();
+    void drawDetection();
+
 
     bool gameOver = false;
     int winns,losses;

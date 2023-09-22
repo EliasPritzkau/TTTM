@@ -154,6 +154,15 @@ bool Widget::checkIfWrittenOn(int indexOfButton)
     return false;
 }
 
+void Widget::drawDetection()
+{
+    for (int i = 1; i < 10; i++)
+        if (PBList.at(i)->text() ==  "_")
+            return;
+
+    //return draw?
+}
+
 void Widget::resetField()
 {
     for (int i = 1; i < PBList.length(); i++)
