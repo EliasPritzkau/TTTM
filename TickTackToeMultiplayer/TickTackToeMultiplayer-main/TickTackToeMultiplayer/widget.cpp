@@ -17,8 +17,10 @@ Widget::Widget(QWidget *parent)
     buildField();
 
 
+    connect(this, &Widget::WinDetected, [=] (QString winnerSymbol) {buildDialog(winnerSymbol); disableFields();});
 
     connect(n, &Networking::playerDisconnected, this, &Widget::disableFields);
+
     connect(n,&Networking::messageSend, this, &Widget::interpretMessage);
 
     connect(n, &Networking::ourTurn, this,  [=] (bool ourturn){  if(ourturn){ resetField(); enableFields(); }else{ resetField(); disableFields();}  });
@@ -58,8 +60,6 @@ void Widget::writeOnFieldAfterButtonClicked()
 {
 
     qDebug() << "write on field";
-
-
     QPushButton *button = qobject_cast<QPushButton *>(sender());
 
     //Just marginally different from interpret message
@@ -178,64 +178,43 @@ void Widget::determineSymbol()
     }
 }
 
+//The symbol rotates from enemy Symbol to playerSymbol
 void Widget::checkForWin(QString symbol)
 {
-
     //top line
     if(ui->PB1->text() == symbol && ui->PB2->text() == symbol && ui->PB3->text() == symbol)
-    {
-        winnerLoser=  ui->PB2->text();
-        gameOver=true;
-    }//mid line
+
+        emit WinDetected(symbol);
+    //mid line
     else if(ui->PB4->text() == symbol && ui->PB5->text() == symbol && ui->PB9->text() == symbol)
 
-    {
-        winnerLoser=  ui->PB5->text();
-        gameOver=true;
-    }//bottom line
+        emit WinDetected(symbol);
+    //bottom line
     else if (ui->PB7->text() == symbol && ui->PB8->text() == symbol && ui->PB9->text() == symbol)
 
-    {
-        winnerLoser=  ui->PB8->text();
-        gameOver=true;
-    }//Diagonal right left
+        emit WinDetected(symbol);
+    //Diagonal right left
     else if(ui->PB1->text() == symbol && ui->PB5->text() == symbol && ui->PB9->text() == symbol)
-    {
-        winnerLoser=  ui->PB5->text();
-        gameOver=true;
-    } //Diagonal left right
-    else if(ui->PB3->text() == symbol && ui->PB5->text() == symbol && ui->PB9->text() == symbol)
-    {
-        winnerLoser=  ui->PB5->text();
-        gameOver=true;
-    }
 
+        emit WinDetected(symbol);
+     //Diagonal left right
+    else if(ui->PB3->text() == symbol && ui->PB5->text() == symbol && ui->PB9->text() == symbol)
+
+        emit WinDetected(symbol);
 
     //left collumn
     if(ui->PB1->text() == symbol && ui->PB4->text() == symbol && ui->PB7->text() == symbol)
-    {
-        winnerLoser=  ui->PB2->text();
-        gameOver=true;
-    }//mid collumn
+
+        emit WinDetected(symbol);
+    //mid collumn
     else if(ui->PB2->text() == symbol && ui->PB5->text() == symbol && ui->PB8->text() == symbol)
 
-    {
-        winnerLoser=  ui->PB5->text();
-        gameOver=true;
-    }//right collumn
+
+        emit WinDetected(symbol);
+    //right collumn
     else if (ui->PB3->text() == symbol && ui->PB6->text() == symbol && ui->PB9->text() == symbol)
 
-    {
-        winnerLoser=  ui->PB8->text();
-        gameOver=true;
-    }
-
-    if(gameOver)
-    {
-
-        buildDialog(winnerLoser);
-        disableFields();
-    }
+        emit WinDetected(symbol);
 
 }
 

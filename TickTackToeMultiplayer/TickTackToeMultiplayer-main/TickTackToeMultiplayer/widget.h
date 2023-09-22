@@ -19,7 +19,7 @@ public:
     QList<QPushButton*> PBList;
 
 signals:
-    QString signal(QString);
+    QString WinDetected(QString);
 
 private:
     enum mode {master, slave};
