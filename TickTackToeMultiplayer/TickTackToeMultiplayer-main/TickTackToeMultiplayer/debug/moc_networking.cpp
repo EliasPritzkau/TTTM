@@ -66,19 +66,19 @@ static const uint qt_meta_data_Networking[] = {
  // signals: name, argc, parameters, tag, flags
        1,    0,   54,    2, 0x06 /* Public */,
        3,    0,   55,    2, 0x06 /* Public */,
-       4,    0,   56,    2, 0x06 /* Public */,
-       5,    0,   57,    2, 0x06 /* Public */,
-       6,    0,   58,    2, 0x06 /* Public */,
+       4,    1,   56,    2, 0x06 /* Public */,
+       5,    0,   59,    2, 0x06 /* Public */,
+       6,    0,   60,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       7,    0,   59,    2, 0x08 /* Private */,
-       8,    0,   60,    2, 0x08 /* Private */,
-       9,    0,   61,    2, 0x08 /* Private */,
+       7,    0,   61,    2, 0x08 /* Private */,
+       8,    0,   62,    2, 0x08 /* Private */,
+       9,    0,   63,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::Bool,    2,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -98,7 +98,7 @@ void Networking::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->messageSend(); break;
         case 1: _t->connecttionEstablished(); break;
-        case 2: _t->ourTurn(); break;
+        case 2: _t->ourTurn((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->searchtimeOver(); break;
         case 4: _t->playerDisconnected(); break;
         case 5: _t->clearSocket(); break;
@@ -123,7 +123,7 @@ void Networking::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             }
         }
         {
-            using _t = void (Networking::*)();
+            using _t = void (Networking::*)(bool );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Networking::ourTurn)) {
                 *result = 2;
                 return;
@@ -144,7 +144,6 @@ void Networking::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             }
         }
     }
-    Q_UNUSED(_a);
 }
 
 QT_INIT_METAOBJECT const QMetaObject Networking::staticMetaObject = { {
@@ -200,9 +199,10 @@ void Networking::connecttionEstablished()
 }
 
 // SIGNAL 2
-void Networking::ourTurn()
+void Networking::ourTurn(bool _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3

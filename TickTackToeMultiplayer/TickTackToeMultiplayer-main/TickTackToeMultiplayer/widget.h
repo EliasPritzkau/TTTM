@@ -49,6 +49,7 @@ private:
     void determineSymbol();
     void checkForWin(QString symbol);
     void surrender();
+    bool writeOnField(QString index, QString symbol);
 
 
 private slots:

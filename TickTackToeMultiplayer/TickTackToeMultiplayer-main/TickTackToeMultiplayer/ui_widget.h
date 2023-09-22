@@ -22,7 +22,6 @@ class Ui_Widget
 {
 public:
     QFrame *frame;
-    QPushButton *PBUNNASSIGHNED;
     QPushButton *FindPlayer;
     QPushButton *PbSurrender;
     QLCDNumber *StandingsEnemy;
@@ -44,15 +43,12 @@ public:
     {
         if (Widget->objectName().isEmpty())
             Widget->setObjectName(QString::fromUtf8("Widget"));
-        Widget->resize(416, 341);
+        Widget->resize(413, 342);
         frame = new QFrame(Widget);
         frame->setObjectName(QString::fromUtf8("frame"));
         frame->setGeometry(QRect(0, 0, 411, 341));
         frame->setFrameShape(QFrame::StyledPanel);
         frame->setFrameShadow(QFrame::Raised);
-        PBUNNASSIGHNED = new QPushButton(frame);
-        PBUNNASSIGHNED->setObjectName(QString::fromUtf8("PBUNNASSIGHNED"));
-        PBUNNASSIGHNED->setGeometry(QRect(320, 110, 80, 25));
         FindPlayer = new QPushButton(frame);
         FindPlayer->setObjectName(QString::fromUtf8("FindPlayer"));
         FindPlayer->setGeometry(QRect(320, 210, 80, 25));
@@ -125,7 +121,6 @@ public:
     void retranslateUi(QWidget *Widget)
     {
         Widget->setWindowTitle(QApplication::translate("Widget", "Widget", nullptr));
-        PBUNNASSIGHNED->setText(QApplication::translate("Widget", "Surrender", nullptr));
         FindPlayer->setText(QApplication::translate("Widget", "Find Player", nullptr));
         PbSurrender->setText(QApplication::translate("Widget", "Surrender", nullptr));
         PB2->setText(QApplication::translate("Widget", "X", nullptr));

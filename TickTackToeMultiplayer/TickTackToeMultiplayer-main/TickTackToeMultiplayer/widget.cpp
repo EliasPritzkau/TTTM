@@ -23,7 +23,7 @@ Widget::Widget(QWidget *parent)
 
     connect(n,&Networking::messageSend, this, &Widget::interpretMessage);
 
-    connect(n, &Networking::ourTurn, this,  [=] (bool ourturn){  if(ourturn){ resetField(); enableFields(); }else{ resetField(); disableFields();}  });
+    connect(n, &Networking::ourTurn, this,  [=] (bool ourturn){  if(ourturn){ resetField(); enableFields();}else{ resetField(); disableFields();}  });
 
     connect(ui->PbSurrender, &QPushButton::clicked, this, [=] { n->sendString("surrender"); n->determineStartingPLayer();});
 
@@ -52,25 +52,19 @@ void Widget::buildField()
     myOptions  << "surrender" << "rematch" << "X" << "O" <<"resetandyoustart" << "resetandistart" <<  "Hello";
     connectFieldsWithClicked();
     disableFields();
-
 }
 
 void Widget::writeOnFieldAfterButtonClicked()
 {
 
-    qDebug() << "write on field";
+    qDebug() << "button clicked";
     QPushButton *button = qobject_cast<QPushButton *>(sender());
 
     //Just marginally different from interpret message
-    if (checkIfWrittenOn(PBList.indexOf(button)))
-    {
-
+    if (writeOnField(QString().number(PBList.indexOf(button)), playersymbol))
         n->sendString(QString().number(PBList.indexOf(button)));
-        PBList.at(PBList.indexOf(button))->setText(playersymbol);
 
-        disableFields();
-        checkForWin(enemyPlayerSymbol);
-    }
+    qDebug() << "Mistakes where made";
 }
 void Widget::interpretMessage()
 {
@@ -108,17 +102,10 @@ void Widget::interpretMessage()
         return;
 
     default:
-        //Have to check if is an int
-        if (checkIfWrittenOn(message.toInt()))
-            //Crashes if unnkonwn input
-        {
-            PBList.at(message.toInt())->setText(enemyPlayerSymbol);
-            enableFields();
-            checkForWin(playersymbol);
+        if (writeOnField(message, enemyPlayerSymbol))
             return;
-        }
-        qDebug() << "Error: idk what happend";
-        return;
+        else
+            qDebug() << "Mistakes happend";
     }
 }
 
@@ -176,7 +163,6 @@ void Widget::determineSymbol()
         n->sendString("X");
         playersymbol = 'O';
         enemyPlayerSymbol = 'X';
-
     }
     else
     {
@@ -191,39 +177,63 @@ void Widget::checkForWin(QString symbol)
 {
     //top line
     if(ui->PB1->text() == symbol && ui->PB2->text() == symbol && ui->PB3->text() == symbol)
-
         emit WinDetected(symbol);
+
     //mid line
-    else if(ui->PB4->text() == symbol && ui->PB5->text() == symbol && ui->PB9->text() == symbol)
-
+    else if(ui->PB4->text() == symbol && ui->PB5->text() == symbol && ui->PB6->text() == symbol)
         emit WinDetected(symbol);
+
     //bottom line
     else if (ui->PB7->text() == symbol && ui->PB8->text() == symbol && ui->PB9->text() == symbol)
-
         emit WinDetected(symbol);
+
     //Diagonal right left
     else if(ui->PB1->text() == symbol && ui->PB5->text() == symbol && ui->PB9->text() == symbol)
-
         emit WinDetected(symbol);
-     //Diagonal left right
-    else if(ui->PB3->text() == symbol && ui->PB5->text() == symbol && ui->PB9->text() == symbol)
 
+    //Diagonal left right
+    else if(ui->PB3->text() == symbol && ui->PB5->text() == symbol && ui->PB7->text() == symbol)
         emit WinDetected(symbol);
 
     //left collumn
     if(ui->PB1->text() == symbol && ui->PB4->text() == symbol && ui->PB7->text() == symbol)
-
         emit WinDetected(symbol);
+
     //mid collumn
     else if(ui->PB2->text() == symbol && ui->PB5->text() == symbol && ui->PB8->text() == symbol)
-
-
         emit WinDetected(symbol);
+
     //right collumn
     else if (ui->PB3->text() == symbol && ui->PB6->text() == symbol && ui->PB9->text() == symbol)
-
         emit WinDetected(symbol);
 
+}
+
+bool Widget::writeOnField(QString index, QString symbol)
+{
+    qDebug() << "write on field called";
+    try
+    {
+
+        if (checkIfWrittenOn(index.toInt()))
+            //Crashes if unnkonwn input
+        {
+            PBList.at(index.toInt())->setText(symbol);
+            if (symbol == enemyPlayerSymbol)
+                enableFields();
+            else
+                disableFields();
+            checkForWin(playersymbol);
+            drawDetection();
+            return true;
+        }
+        else return false;
+    }
+    catch(...)
+    {
+        qDebug()<< "mistake inside of Write on field";
+    }
+    return  false;
 }
 
 
