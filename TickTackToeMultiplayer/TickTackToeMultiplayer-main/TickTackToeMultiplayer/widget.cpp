@@ -40,7 +40,6 @@ Widget::Widget(QWidget *parent)
     });
     connect(ui->TestButton, &QPushButton::clicked, this, &Widget::connectionTest);
 
-
 }
 Widget::~Widget()
 {
